@@ -4,20 +4,14 @@ const {JSDOM} = require('jsdom');
 const path = require('path');
 const fs = require('fs');
 
+const chalk = require('chalk');
 
 const { document } = (new JSDOM(`<html><script></script></html>`)).window
 
 async function downloadImage(remoteURL, directoryName){
 
-  // Save  file here.
-  // const path = path.(__dirname, 'images', remoteURL;
-  // let file = remoteURL.replace(/(?=.(jpg|png|gif|jpeg|tiff))/, '');
-
-  // console.log(remoteURL);
-
   let rx = /([a-z0-9]+_[0-9]\..+)/;
   let file = remoteURL.match(rx)[0];
-  // console.log(file);
 
   if(!fs.existsSync(__dirname + '/' + 'images/' + directoryName))
     fs.mkdirSync(__dirname + '/' + 'images/' + directoryName);
@@ -28,51 +22,86 @@ async function downloadImage(remoteURL, directoryName){
   const writer = fs.createWriteStream(filePath);
 
   // Get the data from ifunny.
+  console.log(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.gray(remoteURL));
   const response = await axios({
     url: remoteURL,
     method: 'GET',
     responseType: 'stream'
+  }).then(function(res){
+    console.log(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.gray(remoteURL) + ' ' + printResCode(res.status) + ' ' + chalk.gray());
+    return res;
+  }).catch(function(err){
+    console.log(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.gray(remoteURL) + ' ' + printResCode(res.error.status) + ' ' + chalk.gray());
   });
 
   // Start writing data to the disk
   response.data.pipe(writer);
+
+}
+
+// Prints the status code with some color
+function printResCode(code){
+  if(code >= 500)
+    return chalk.red(code);
+  if(code >= 400)
+    return chalk.purple(code);
+  if(code >= 300)
+    return chalk.yellow(code);
+  if(code >= 200)
+    return chalk.green(code);
+  if(code >= 100)
+    return chalk.red(code);
 }
 
 async function mainFunction(address){
   // console.log(address);
-  let res = await axios.get(address);
-
-  let page = document.createElement('div');
-  page.innerHTML = res.data;
-
-  // DOM ELEMENT IMAGES
-  let images = page.querySelectorAll('div.feed__list > ul > li > div > div > a > img');
-  let imageUrls = [];
-
-  for(var i = 0; i < images.length; i++){
-    let img = images[i];
-    let imageURL = img.getAttribute('data-src');
-
-    imageURL = imageURL.replace(/imageproxy/g, 'img');
-    imageURL = imageURL.replace(/(?<=ifunny.co)\/(crop|resize):[^\/]+(?=\/)/g, '');
-
-    imageUrls.push(imageURL);
-  }
-
-  // console.log(address);
+  let nextPageKey;
+  let pageAddress = address;
   let dirName = address.match(/\/([^\/]+?)$/)[1];
-  // console.log(dirName);
-  for(var i = 0; i < imageUrls.length; i++){
-    try{
-      await downloadImage(imageUrls[i], dirName);
+  let pageCounter = 0;
+  do{
+    console.log(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.gray(pageAddress));
+    let res = await axios.get(pageAddress).then(function(res){
+      console.log(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.gray(pageAddress) + ' ' + printResCode(res.status) + ' ' + chalk.gray());
+      return res;
+    }).catch(function(err){
+      console.log(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.gray(pageAddress) + ' ' + printResCode(err.response.status) + ' ' + chalk.gray());
+    });
+
+    let page = document.createElement('div');
+    page.innerHTML = res.data;
+
+    // Get the next page key and address
+    nextPageKey = page.querySelector('div.feed__list > ul > li').getAttribute('data-next');
+
+    pageCounter++;
+    pageAddress = `https://ifunny.co/user/${dirName}/timeline/${nextPageKey}?page=${pageCounter}&mode=list`;
+
+    // DOM ELEMENT IMAGES
+    let images = page.querySelectorAll('div.feed__list > ul > li > div > div > a > img');
+    let imageUrls = [];
+
+    for(var i = 0; i < images.length; i++){
+      let img = images[i];
+      let imageURL = img.getAttribute('data-src');
+
+      imageURL = imageURL.replace(/(?<=ifunny.co\/)(crop|resize):[^\/]+(?=\/)/g, 'crop:x-20');
+
+      imageUrls.push(imageURL);
     }
-    catch(ex){
-      console.log(ex);
+
+    for(var i = 0; i < imageUrls.length; i++){
+      try{
+        downloadImage(imageUrls[i], dirName);
+      }
+      catch(ex){
+        console.log(ex);
+      }
     }
   }
+  while(nextPageKey)
 }
 
-// console.log(process.argv);
 (async() => {
-  await mainFunction(process.argv[2]);
+  await mainFunction(`https://ifunny.co/user/${process.argv[2]}`);
 })()

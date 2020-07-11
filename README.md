@@ -19,4 +19,5 @@
 ### **One Line**
 
 > git clone https://github.com/cyleja1234/Ifunny-scraper ; npm i ; cd ifunny-scraper ; node index.js "IudexFundyr"
+
 (using "*IudexFundyr*" as an example)

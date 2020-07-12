@@ -18,6 +18,10 @@
 ---
 ### **One Line**
 
-> git clone https://github.com/cyleja1234/Ifunny-scraper ; cd ifunny-scraper ; npm i ; node index.js "IudexFundyr"
+```git clone https://github.com/cyleja1234/Ifunny-scraper ; cd ifunny-scraper ; npm i ; node index.js "IudexFundyr"```
 
 (using "*IudexFundyr*" as an example)
+### ***Multi User Download***
+useing the run command but add commas for adding users 
+Ex:
+> node index.js username1,username2,etc

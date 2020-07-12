@@ -35,7 +35,7 @@ async function downloadImage(remoteURL, directoryName){
 
   // Get the data from ifunny.
   jetty.moveTo([0,0]);
-  jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                        `));
+  jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                                  `));
   jetty.moveTo([3,0]);
   const response = await axios({
     url: remoteURL,
@@ -43,12 +43,12 @@ async function downloadImage(remoteURL, directoryName){
     responseType: 'stream'
   }).then(function(res){
     //jetty.moveTo([5,0]);
-    jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                        `));
+    jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                                  `));
     jetty.moveTo([mid,0]);
     jetty.text(printResCode(res.status));
     return res;
   }).catch(function(err){
-    jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                        `));
+    jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                                  `));
     jetty.moveTo([mid,0]);
     jetty.text(printResCode(err.response.status));
   });
@@ -85,15 +85,15 @@ async function mainFunction(address){
       let mid = Math.floor(row/2);
 
     jetty.moveTo([0,0]);
-    jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                        `));
+    jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                                  `));
     jetty.moveTo([3,0]);
     let res = await axios.get(pageAddress).then(function(res){
-      jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                        `));
+      jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                                  `));
     jetty.moveTo([mid,0]);
     jetty.text(printResCode(res.status));
       return res;
     }).catch(function(err){
-      jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                        `));
+      jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                                  `));
       jetty.moveTo([mid,0]);
       jetty.text(printResCode(err.response.status));
     });

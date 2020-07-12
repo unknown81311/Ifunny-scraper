@@ -12,6 +12,8 @@ var jetty = new Jetty(process.stdout);
 
 const { document } = (new JSDOM(`<html><script></script></html>`)).window
 
+let nameList = process.argv[2].split(',');
+let col = process.stdout.columns;
 let row = process.stdout.rows;
 let mid = Math.floor(row/2);
 jetty.clear();
@@ -33,8 +35,7 @@ async function downloadImage(remoteURL, directoryName){
 
   // Get the data from ifunny.
   jetty.moveTo([0,0]);
-  jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(remoteURL));
-  jetty.text('\t\t\t\t\t\t\t\t\n')
+  jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                        `));
   jetty.moveTo([3,0]);
   const response = await axios({
     url: remoteURL,
@@ -42,16 +43,15 @@ async function downloadImage(remoteURL, directoryName){
     responseType: 'stream'
   }).then(function(res){
     //jetty.moveTo([5,0]);
-    jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(remoteURL));
+    jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                        `));
     jetty.moveTo([mid,0]);
     jetty.text(printResCode(res.status));
     return res;
   }).catch(function(err){
-    jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(remoteURL));
+    jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${remoteURL}                                        `));
     jetty.moveTo([mid,0]);
     jetty.text(printResCode(err.response.status));
   });
-  jetty.text('\t\t\t\t\t\t\t\t\n')
   // Start writing data to the disk
   response.data.pipe(writer);
 
@@ -80,21 +80,23 @@ async function mainFunction(address){
   let total = 0;
 
   do{
+      let col = process.stdout.columns;
+      let row = process.stdout.rows;
+      let mid = Math.floor(row/2);
+
     jetty.moveTo([0,0]);
-    jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(pageAddress));
-    jetty.text('\t\t\t\t\t\t\t\t\n')
+    jetty.text(chalk.gray('-->') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                        `));
     jetty.moveTo([3,0]);
     let res = await axios.get(pageAddress).then(function(res){
-      jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(pageAddress));
+      jetty.text(chalk.gray('<--') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                        `));
     jetty.moveTo([mid,0]);
     jetty.text(printResCode(res.status));
       return res;
     }).catch(function(err){
-      jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(pageAddress));
+      jetty.text(chalk.red('XXX') + ' ' + chalk.white('GET') + ' ' + chalk.yellow(`${pageAddress}                                        `));
       jetty.moveTo([mid,0]);
       jetty.text(printResCode(err.response.status));
     });
-    jetty.text('\t\t\t\t\t\t\t\t\n')
 
     let page = document.createElement('div');
     page.innerHTML = res.data;
@@ -117,21 +119,19 @@ async function mainFunction(address){
 
       imageUrls.push(imageURL);
     }
-
     for(var i = 0; i < imageUrls.length; i++){
       try{
         await downloadImage(imageUrls[i], dirName);
         counter ++;
         let per = counter/total*100;
         per = Number((per).toFixed(1));
-        jetty.moveTo([row-2,0]);
-        jetty.text(chalk.green(`(${counter}/${total})|${per}%   `));
+        jetty.moveTo([row,0]);
+        jetty.text(chalk.green(`(${i+1}/10)|(${counter}/${total})|${per}%   `));
         //jetty.text('\n');
         if (counter == total) {
           jetty.moveTo([row,0]);
-          jetty.text("done!")
+          jetty.text("\ndone!       ")
         }
-        jetty.text(chalk.gray());
       }
       catch(ex){
         console.log(ex);
@@ -140,7 +140,11 @@ async function mainFunction(address){
   }
   while(nextPageKey)
 }
-
+jetty.clear();
 (async() => {
-  await mainFunction(`https://ifunny.co/user/${process.argv[2]}`);
+  let nameList = process.argv[2].split(',');
+  for(var i = 0; i < nameList.length; i++){
+    await mainFunction("https://ifunny.co/user/" + nameList[i]);
+    jetty.clear();
+  }
 })()

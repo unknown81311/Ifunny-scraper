@@ -61,7 +61,7 @@ function printResCode(code){
   if(code >= 500)
     return chalk.red(`status ${code}`);
   if(code >= 400)
-    return chalk.purple(`status ${code}`);
+    return chalk.magenta(`status ${code}`);
   if(code >= 300)
     return chalk.yellow(`status ${code}`);
   if(code >= 200)

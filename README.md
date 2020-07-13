@@ -2,8 +2,14 @@
 <img src="logo/Logo.png" alt="drawing" width="200"/>
 
 ---
+###requirements:###
+> Git bash
+---
 
 ## Installation:
+***Open***
+> open git bash in a directy you want Ifunny-scraper downloaded
+ 
 **Download**
 > git clone https://github.com/cyleja1234/Ifunny-scraper
 

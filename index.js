@@ -1,4 +1,8 @@
 //hello world!
+var httpProxy = require('http-proxy');
+ 
+var proxy = httpProxy.createProxyServer(options);
+
 const axios = require('axios');
 const {JSDOM} = require('jsdom');
 
@@ -126,11 +130,11 @@ async function mainFunction(address){
         let per = counter/total*100;
         per = Number((per).toFixed(1));
         jetty.moveTo([row,0]);
-        jetty.text(chalk.green(`(${i+1}/10)|(${counter}/${total})|${per}%   `));
+        jetty.text(chalk.green(`${address} | (${i+1}/10)|(${counter}/${total})|${per}%   `));
         //jetty.text('\n');
         if (counter == total) {
           jetty.moveTo([row,0]);
-          jetty.text("\ndone!       ")
+          jetty.text("\ndone!                         ")
         }
       }
       catch(ex){

@@ -2,11 +2,11 @@
 <img src="logo/Logo.png" alt="drawing" width="200"/>
 
 ---
-###requirements:###
+### requirements: ###
 > Git bash
 ---
 
-## Installation:
+## Installation: ###
 ***Open***
 > open git bash in a directy you want Ifunny-scraper downloaded
  

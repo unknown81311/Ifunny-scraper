@@ -31,3 +31,9 @@
 useing the run command but add commas for adding users 
 Ex:
 > node index.js username1,username2,etc
+
+---
+
+### Extra Info ###
+
+if you get a 404 ifunny thinks it is a dos attack and blocks you use a vpn to bypass.

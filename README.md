@@ -3,9 +3,8 @@
 
 ---
 ### requirements: ###
-> Git bash
+> Git bash with node & npm
 ---
-
 ## Installation: ###
 ***Open***
 > open git bash in a directy you want Ifunny-scraper downloaded

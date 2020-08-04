@@ -1,8 +1,4 @@
 //hello world!
-var httpProxy = require('http-proxy');
- 
-var proxy = httpProxy.createProxyServer(options);
-
 const axios = require('axios');
 const {JSDOM} = require('jsdom');
 

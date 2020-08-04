@@ -36,3 +36,9 @@ Ex:
 ### Extra Info ###
 
 if you get a 404 ifunny thinks it is a dos attack and blocks you use a vpn to bypass.
+
+---
+
+impruvments: 
+need to add gif and video support 
+need to add size constriction support

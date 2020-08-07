@@ -37,6 +37,8 @@ Ex:
 
 if you get a 404 ifunny thinks it is a dos attack and blocks you use a vpn to bypass.
 
+to use on gltich go to https://glitch.com click new project then import for github, copy this git repository and past it in the given box, once imorted and opens a new window click the button on the bottom left "tools" then terminal. Then you follow the instructions abuve skipping the git clone and cd ifunny-scraper, once it is done download tpy in refresh to view the media created.
+
 ---
 
 impruvments: 

@@ -10,7 +10,10 @@ Markdown is a lightweight and easy-to-use syntax for styling your writing. It in
 
 ```markdown
 Syntax highlighted code block
-
+<iframe
+  src="https://discord-sniper.cyleja1234.repl.run"
+  style="width:100%; height:300px;"
+></iframe>
 # Header 1
 ## Header 2
 ### Header 3

@@ -10,7 +10,7 @@
 > open git bash in a directy you want Ifunny-scraper downloaded
  
 **Download**
-> git clone https://github.com/cyleja1234/Ifunny-scraper
+> git clone https://github.com/unknown81311/Ifunny-scraper
 
 **Chage Directory**
 > cd ifunny-scraper
@@ -23,7 +23,7 @@
 ---
 ### **One Line**
 
-```git clone https://github.com/cyleja1234/Ifunny-scraper ; cd ifunny-scraper ; npm i ; node index.js "IudexFundyr"```
+```git clone https://github.com/unknown81311/Ifunny-scraper ; cd ifunny-scraper ; npm i ; node index.js "IudexFundyr"```
 
 (using "*IudexFundyr*" as an example)
 ### ***Multi User Download***
